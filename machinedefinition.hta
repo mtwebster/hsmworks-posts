@@ -1,0 +1,1207 @@
+<!-- Copyright (c) by HSMWorks 2010. -->
+<!-- hsmworks@hsmworks.com -->
+
+<html>
+
+<head><title>HSMWorks Machine Definition</title>
+
+<HTA:APPLICATION ID="oHTA";
+  applicationName="HSMWorks Machine Definition";
+  border="dialog";
+  singleInstance="no";
+  sysMenu="yes";
+  innerBorder="no"
+/>
+
+<style>
+body {
+  background-color: #ffffff;
+  font2: 15px "Century Gothic";
+  color: black;
+  width: 640px;
+};
+
+.page {
+  margin: 25px;
+  font-weight: normal;
+  font: 15px "Century Gothic";
+};
+
+hr {
+  color: black;
+};
+
+.length, .angle, .weight, .speed, .feed, .angular_feed {
+  display: inline;
+};
+
+.error {
+  font-weight:700;
+  color:red;
+};
+</style>
+ 
+</head>
+<body leftmargin="0px" topmargin="0px" marginwidth="0px" marginheight="0px" onLoad="onLoad()">
+
+<object classid="clsid:5220cb21-c88d-11cf-b347-00aa00a28331" ID="Object1" VIEWASTEXT>
+  <param name="LPKPath" value="comdlg.lpk">
+</object>
+
+<object id="commonDialog1" width=0 height=0 classid="CLSID:F9043C85-F6F2-101A-A3C9-08002B2F49FB" codebase="http://activex.microsoft.com/controls/vb5/comdlg32.cab" VIEWASTEXT>
+  <param name="CancelError" value="1">
+  <param name="DialogTitle" value="Select Machine Definition">
+  <param name="Filter" value="Machine Definition (*.machine)|*.machine|All Files (*.*)|*.*">
+</object>
+
+<a href="http://hsmworks.com"><img src="hsmworks_banner.png" border="0" alt="HSMWorks - The CAM Solution for SolidWorks"/></a>
+<br/>
+
+<div class="page">
+
+<p>Machine definition for use with HSMWorks post processor.</p>
+<br>
+
+<div style="display:inline">Unit: </div>
+<select name="unit" id="unit" style="width: 125px" onchange="onUnit()">
+<option value="millimeters">Millimeters</option>
+<option value="inches">Inches</option>
+</select>
+<br/>
+<br/>
+
+<hr/>
+
+<h3>Machine</h3>
+
+<table>
+<tr><td><div style="display:inline" id="ldescription">Description: </div><input type="text" name="description" value="" style="width: 400px"/></td></tr>
+<tr><td><div style="display:inline" id="lvendor">Vendor: </div><input type="text" name="vendor" value="" style="width: 400px"/></td></tr>
+<tr><td><div style="display:inline" id="lcontrol">Control: </div><input type="text" name="control" value="" style="width: 400px"/></td></tr>
+<tr><td></td></tr>
+<tr><td><div style="display:inline" id="lwidth">Width: </div><input type="value" name="width" value="0" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="ldepth">Depth: </div><input type="value" name="depth" value="0" id="Value5" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="lheight">Height: </div><input type="value" name="height" value="0" id="Value6" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="lweight">Weight: </div><input type="value" name="weight" value="0" style="width: 100px"/> <div class="weight"></div></td></tr>
+<tr><td><div style="display:inline" id="lcapacity">Capacity: </div><input type="value" name="capacity" value="0" style="width: 100px"/> <div class="weight"></div></td></tr>
+<tr><td><div style="display:inline" id="lspindlespeed">Maximum spindle speed: </div><input type="value" name="spindlespeed" value="0" style="width: 100px"/> <div class="speed"></div></td></tr>
+<!-- <tr><td><div style="display:inline" id="laccuracy">Accuracy: </div><input type="value" name="accuracy" value="0" style="width: 100px"/> <div class="length"></div></td></tr> -->
+<!-- <tr><td><div style="display:inline" id="lfeed">Maximum feedrate: </div><input type="value" name="feed" value="0" style="width: 100px"/> <div class="feed"></div></td></tr> -->
+</table>
+
+<!-- ADD PICTURES HERE -->
+
+<p></p>
+
+<hr/>
+
+<!-- Linear X-axis -->
+<table style="width:550px">
+<tr style="vertical-align:top">
+<td><h3>X-Axis (Linear)</h3></td>
+<td style="text-align:right"><img src="graphics/linear_axis.png"/></td>
+</tr>
+</table>
+
+<table style="width:550px">
+<tr><td><div style="display:inline" id="lx_axis">The direction of the axis relative to the WCS: </div><br/>
+<div style="display:inline" id="lx_x">X: </div><input type="value" name="x_x" value="1" style="width: 100px"/>
+<div style="display:inline" id="lx_y">Y: </div><input type="value" name="x_y" value="0" style="width: 100px"/>
+<div style="display:inline" id="lx_z">Z: </div><input type="value" name="x_z" value="0" style="width: 100px"/></td></tr>
+<tr><td><div style="display:inline" id="lx_min">Minimum: </div><input type="value" name="x_min" value="-1000" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="lx_max">Maximum: </div><input type="value" name="x_max" value="1000" id="Value2" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="lx_res">Resolution: </div><input type="value" name="x_res" value="0.001" style="width: 100px"/> <div class="length"></div></td></tr>
+<!-- <tr><td><div style="display:inline" id="lx_feed">Maximum feedrate: </div><input type="value" name="x_feed" value="0" style="width: 100px"/> <div class="feed"></div></td></tr> -->
+</table>
+
+<hr/>
+
+<!-- Linear Y-axis -->
+<table style="width:550px">
+<tr style="vertical-align:top">
+<td><h3>Y-Axis (Linear)</h3></td>
+<td style="text-align:right"><img src="graphics/linear_axis.png"/></td>
+</tr>
+</table>
+
+<table style="width:550px">
+<tr><td><div style="display:inline" id="ly_axis">The direction of the axis relative to the WCS: </div><br/>
+<div style="display:inline" id="ly_x">X: </div><input type="value" name="y_x" value="0" style="width: 100px"/>
+<div style="display:inline" id="ly_y">Y: </div><input type="value" name="y_y" value="1" style="width: 100px"/>
+<div style="display:inline" id="ly_z">Z: </div><input type="value" name="y_z" value="0" style="width: 100px"/></td></tr>
+<tr><td><div style="display:inline" id="ly_min">Minimum: </div><input type="value" name="y_min" value="-1000" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="ly_max">Maximum: </div><input type="value" name="y_max" value="1000" id="Value3" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="ly_res">Resolution: </div><input type="value" name="y_res" value="0.001" style="width: 100px"/> <div class="length"></div></td></tr>
+<!-- <tr><td><div style="display:inline" id="ly_feed">Maximum feedrate: </div><input type="value" name="y_feed" value="0" style="width: 100px"/> <div class="feed"></div></td></tr> -->
+</table>
+
+<hr/>
+
+<!-- Linear Z-axis -->
+<table style="width:550px">
+<tr style="vertical-align:top">
+<td><h3>Z-Axis (Linear)</h3></td>
+<td style="text-align:right"><img src="graphics/linear_axis.png"/></td>
+</tr>
+</table>
+
+<table style="width:550px">
+<tr><td><div style="display:inline" id="lz_axis">The direction of the axis relative to the WCS: </div><br/>
+<div style="display:inline" id="lz_x">X: </div><input type="value" name="z_x" value="0" style="width: 100px"/>
+<div style="display:inline" id="lz_y">Y: </div><input type="value" name="z_y" value="0" style="width: 100px"/>
+<div style="display:inline" id="lz_z">Z: </div><input type="value" name="z_z" value="1" style="width: 100px"/></td></tr>
+<tr><td><div style="display:inline" id="ls_min">Minimum: </div><input type="value" name="z_min" value="-1000" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="lz_max">Maximum: </div><input type="value" name="z_max" value="1000" id="Value4" style="width: 100px"/> <div class="length"></div></td></tr>
+<tr><td><div style="display:inline" id="lz_res">Resolution: </div><input type="value" name="z_res" value="0.001" style="width: 100px"/> <div class="length"></div></td></tr>
+<!-- <tr><td><div style="display:inline" id="lz_feed">Maximum feedrate: </div><input type="value" name="z_feed" value="0" style="width: 100px"/> <div class="feed"></div></td></tr> -->
+</table>
+
+<hr/>
+
+<table style="width:550px">
+<tr style="vertical-align:top">
+<td><h3>4th Axis (Rotational)</h3></td>
+<td style="text-align:right"><img src="graphics/rotational_axis.png"/></td>
+</tr>
+</table>
+
+<div><input type="checkbox" name="u_useaxis" onClick="u_onClick()"/>&nbsp;<div style="display:inline" id="Div2">Use 4th axis</div></div>
+
+<table id="u_table" style="display:none">
+<tr><td>
+<div style="display:inline" id="u_attachment">Attachment: </div>
+<input type="radio" name="u_attachment" value="head"/><div style="display:inline" id="lu_head">Head</div>
+<input type="radio" name="u_attachment" value="table" checked/><div style="display:inline" id="lu_table">Table</div>
+</td></tr>
+
+<tr><td>
+<div style="display:block" id="lu_axis">Axis relative to the WCS (counterclockwise rotation): </div>
+<div style="display:inline" id="lu_x">X: </div><input type="value" name="u_x" value="0" style="width: 100px"/>
+<div style="display:inline" id="lu_y">Y: </div><input type="value" name="u_y" value="0" style="width: 100px"/>
+<div style="display:inline" id="lu_z">Z: </div><input type="value" name="u_z" value="1" style="width: 100px"/>
+</td></tr>
+
+<tr><td><div style="display:inline" id="lu_pref">Preference: </div>
+<select name="preference" id="u_pref">
+<option value="negative">Negative</option>
+<option value="any" selected>Any</option>
+<option value="positive">Positive</option>
+</select>
+</td></tr>
+
+<tr><td><div style="display:inline" id="lu_min">Minimum: </div><input type="value" name="u_min" value="-360" style="width: 100px"/> <div class="angle"></div></td></tr>
+<tr><td><div style="display:inline" id="lu_max">Maximum: </div><input type="value" name="u_max" value="360" id="Value1" style="width: 100px"/> <div class="angle"></div></td></tr>
+<tr><td><div style="display:inline" id="lu_res">Resolution: </div><input type="value" name="u_res" value="0.001" style="width: 100px"/> <div class="angle"></div></td></tr>
+<!-- <tr><td><div style="display:inline" id="lu_feed">Maximum feedrate: </div><input type="value" name="u_feed" value="0" style="width: 100px"/> <div class="angular_feed"></div></td></tr> -->
+
+<tr><td><div style="display:inline" id="lu_coord">Coordinate: </div>
+<select name="u_coord">
+<option value="X">A</option>
+<option value="Y">B</option>
+<option value="Z" selected>C</option>
+</select>
+</td></tr>
+
+</table>
+
+<hr/>
+
+<table style="width:550px">
+<tr style="vertical-align:top">
+<td><h3>5th Axis (Rotational)</h3></td>
+<td style="text-align:right"><img src="graphics/rotational_axis.png"/></td>
+</tr>
+</table>
+
+<input type="checkbox" name="v_useaxis" onClick="v_onClick()"/>&nbsp;<div style="display:inline" id="lv_use">Use 5th axis</div>
+
+<table id="v_table" style="display:none">
+<tr><td>
+<div style="display:inline" id="lv_attachment">Attachment: </div>
+<input type="radio" name="v_attachment" value="head"/><div style="display:inline" id="lvhead">Head</div>
+<input type="radio" name="v_attachment" value="table" checked/><div style="display:inline" id="lvtable">Table</div>
+</td></tr>
+
+<tr><td>
+<div style="display:block" id="lv_axis">Axis relative to the WCS (counterclockwise rotation): </div>
+<div style="display:inline" id="lv_x">X: </div><input type="value" name="v_x" value="0" style="width: 100px"/>
+<div style="display:inline" id="lv_y">Y: </div><input type="value" name="v_y" value="0" style="width: 100px"/>
+<div style="display:inline" id="lv_z">Z: </div><input type="value" name="v_z" value="1" style="width: 100px"/>
+</td></tr>
+
+<tr><td><div style="display:inline" id="lv_pref">Preference: </div>
+<select name="preference" id="v_pref">
+<option value="negative">Negative</option>
+<option value="any" selected>Any</option>
+<option value="positive">Positive</option>
+</select>
+</td></tr>
+
+<tr><td><div style="display:inline" id="lv_min">Minimum: </div><input type="value" name="v_min" value="-360" style="width: 100px"/> <div class="angle"></div></td></tr>
+<tr><td><div style="display:inline" id="lv_max">Maximum: </div><input type="value" name="v_max" value="360" id="Value7" style="width: 100px"/> <div class="angle"></div></td></tr>
+<tr><td><div style="display:inline" id="lv_res">Resolution: </div><input type="value" name="v_res" value="0.001" style="width: 100px"/> <div class="angle"></div></td></tr>
+<!-- <tr><td><div style="display:inline" id="lv_feed">Maximum feedrate: </div><input type="value" name="v_feed" value="0" style="width: 100px"/> <div class="angular_feed"></div></td></tr> -->
+
+<tr><td><div style="display:inline" id="lv_coord">Coordinate: </div>
+<select name="v_coord">
+<option value="X">A</option>
+<option value="Y">B</option>
+<option value="Z" selected>C</option>
+</select>
+</td></tr>
+
+</table>
+
+<hr/>
+
+<br/>
+
+<div id="error" class="error"></div>
+
+<p><input type="button" name="close" value="Close" onClick="close_onClick()"/> <input type="button" name="save" value="Save" onClick="save_onClick()"/> <input type="button" name="load" value="Load" onClick="load_onClick()"/></p>
+
+</div>
+
+</body>
+
+</html>
+
+<script language="javascript">
+
+var shell = new ActiveXObject("WScript.Shell");
+var subkey = "HSMWorks\\HSMWorks\\options\\";
+var product = "HSMWorks";
+
+var localeDocument;
+
+/** Loads the specified translation file. */
+function loadLocale(localePath) {
+  try {
+    var document = new ActiveXObject("Microsoft.XMLDOM");
+    document.load(localePath);
+
+    document.setProperty("SelectionLanguage", "XPath");
+    document.setProperty("SelectionNamespaces", "xmlns:locale='http://www.cimco-software.com/xml/2003/locale'");
+
+    pattern = ".//locale:locale/locale:message";
+    if (!document.selectSingleNode(pattern)) {
+      return;
+    }
+
+    localeDocument = document;
+  } catch (e) {
+  }
+}
+
+/** Returns the translation for the specified text. */
+function localize(text) {
+  if (localeDocument) {
+    pattern = ".//locale:locale/locale:message[@name='" + text + "']";
+    try {
+      localized = localeDocument.selectSingleNode(pattern).text;
+      return localized;
+    } catch (e) {
+    }
+  }
+  return text;
+}
+
+/** Returns the translation for the specified text with substitution of the extra arguments. */
+function localize2(text) {
+  var result = localize(text);
+  for (var i = 0; i < arguments.length; ++i) {
+    result = result.split("%" + (i + 1)).join(arguments[i + 1]);
+  }
+  return result;
+}
+
+function onLoad() {
+  window.resizeTo(640, 500);
+  
+  try {
+    var localePath = shell.RegRead("HKCU\\Software\\HSMWorks\\HSMWorks\\locale path");
+    loadLocale(localePath);
+  } catch (e) {
+  }
+
+  //close.value = localize("Close");
+  //save.value = localize("Save");
+  
+  onUnit();
+
+  // TAG: we could load settings from file if required
+}
+
+/** Returns the value of the specified radio object. */
+function getCheckedValue(object) {
+  if (!object) {
+    return "";
+  }
+  var length = object.length;
+  if (length == undefined) {
+    if (object.checked) {
+	  return object.value;
+    } else {
+      return "";
+	}
+  }
+  for (var i = 0; i < length; ++i) {
+    if (object[i].checked) {
+      return object[i].value;
+    }
+  }
+  return "";
+}
+
+/** Sets the value for the specified radio group. */
+function setCheckValue(object, value) {
+  if (!object) {
+    return;
+  }
+  var length = object.length;
+  if (length == undefined) {
+    object.checked = (object.value == value.toString());
+    return;
+  }
+  for (var i = 0; i < length; ++i) {
+    object[i].checked = false;
+    if (object[i].value == value.toString()) {
+      object[i].checked = true;
+    }
+  }
+}
+
+function onUnit() {
+  var length = "mm";
+  var weight = "kg";
+  var speed = "rev/min";
+  //var feed = "mm/min";
+  var angle = "deg";
+  //var angular_feed = "deg/min";
+  if (unit.value == "inches") {
+    length = "in";
+    weight = "lb";
+    //feed = "ft/min";
+  }
+  
+  var elements = document.all;
+  var result = "";
+  for (var i = 0; i < elements.length; ++i) {
+    var e = elements[i];
+    switch (e.className) {
+    case "length":
+      e.innerHTML = length;
+      break;
+    case "weight":
+      e.innerHTML = weight;
+      break;
+    case "speed":
+      e.innerHTML = speed;
+      break;
+    case "feed":
+      e.innerHTML = feed;
+      break;
+    case "angle":
+      e.innerHTML = angle;
+      break;
+    case "angular_feed":
+      e.innerHTML = angular_feed;
+      break;
+    }
+  }
+}
+
+function u_onClick() {
+  if (u_useaxis.checked) {
+    u_table.style.display = "table";
+  } else {
+    u_table.style.display = "none";
+    v_table.style.display = "none";
+    v_useaxis.checked = false;
+  }
+}
+
+function v_onClick() {
+  if (v_useaxis.checked) {
+    u_useaxis.checked = true;
+    u_table.style.display = "table";
+    v_table.style.display = "table";
+  } else {
+    v_table.style.display = "none";
+  }
+}
+
+/** Close settings. */
+function close_onClick() {
+  window.close();
+}
+
+/** Sets the specified error. */
+function setError(text) {
+  if (text) {
+    error.innerHTML = localize("Error") + ": " + text;
+  } else {
+    error.innerHTML = "";
+  }
+}
+
+/** Returns the arguments as an array. */
+function getArguments() {
+  var result = [];
+  var text = oHTA.commandLine;
+
+  var argument = "";
+  var i = 0;
+  while (true) {
+    while (text.charAt(i) == " ") { // skip spaces
+     ++i;
+    }
+    if (i >= text.length) { // no more
+      break;
+    }
+    argument = "";
+    
+    if (text.charAt(i) == "\"") { // begin quote
+      ++i; // skip quote
+      var done = false;
+      while ((i < text.length) && !done) {
+        var ch = text.charAt(i);
+        ++i;
+        switch (ch) {
+        case '"': // end quote
+          done = true;
+          break;
+        case '\\':
+          if ((i < text.length) && (text.charAt(i) == '"')) {
+            argument = argument + '"';
+          } else if ((i < text.length) && (text.charAt(i) == '\\')) {
+            argument = argument + '\\';
+          } else {
+            argument = argument + ch;
+          }
+          break;
+        default:
+          argument = argument + ch;
+        }
+      }
+      if (!done) { // error
+        return [];
+      }
+    } else {
+      while ((i < text.length) && (text.charAt(i) != " ")) {
+        argument = argument + text.charAt(i);
+        ++i;
+      }
+    }
+
+    result.push(argument);
+  }
+  
+  return result;
+}
+
+/** Save machine definition. */
+function load_onClick() {
+  //commonDialog1.InitDir = "C:\\";
+  commonDialog1.DialogTitle = localize("Open Machine Definition");
+  try {
+    commonDialog1.ShowOpen();
+  } catch (e) {
+    return;
+  }
+
+  loadMachineDefinition(commonDialog1.FileName);
+}
+
+/** Save machine definition. */
+function save_onClick() {
+  if (validate() != true) {
+    return;
+  }
+
+  //commonDialog1.InitDir = "C:\\";
+  commonDialog1.DialogTitle = localize("Save Machine Definition");
+  try {
+    commonDialog1.ShowSave();
+  } catch (e) {
+    return;
+  }
+  storeMachineDefinition(commonDialog1.FileName);
+  
+  // TAG: window.close();
+}
+
+/** Returns the dot product. */
+function dot(l, r) {
+  if (l.length != r.length) {
+    throw "Vectors have different lengths.";
+  }
+  var result = 0;
+  for (var i = 0; i < l.length; ++i) {
+    result += l[i] * r[i];
+  }
+  return result; 
+}
+
+/** Returns the square modulus of the vector. */
+function getModulus2(v) {
+  var m2 = 0;
+  for (var i = 0; i < v.length; ++i) {
+    m2 += v[i] * v[i];
+  }
+  return m2; 
+}
+
+/** Returns the normalized vector. */
+function normalize(v) {
+  var m2 = getModulus2(v);
+  if (m2 > 0) {
+    var m = 1/Math.sqrt(m2);
+    var result = [];
+    for (var i = 0; i < v.length; ++i) {
+      result.push(v[i] * m);
+    }
+    return result;
+  }
+  return v; 
+}
+
+/** Selects a folder. */
+function selectFolder() {
+  var shell = new ActiveXObject("Shell.Application");
+  var folder = new Object;					
+  folder = shell.BrowseForFolder(0, "Choose a folder", 0);
+  var folderItem = new Object;
+  folderItem = oFolder.Items().Item();
+  return folderItem.Path;
+}    
+
+/** Returns true if the text is a float. */
+function isFloat(text) {
+  var regExp = /^\d*.?\d*$/;
+  return regExp.test(text);
+}
+
+function validate() {
+  { // main
+    if (!isFloat(width.value)) {
+      setError("The machine width is not a valid number.");
+      return;
+    } else if (width.value < 0) {
+      setError("The machine width is negative.");
+      return;
+    }
+    if (!isFloat(depth.value)) {
+      setError("The machine depth is not a valid number.");
+      return;
+    } else if (depth.value < 0) {
+      setError("The machine depth is negative.");
+      return;
+    }
+    if (!isFloat(height.value)) {
+      setError("The machine height is not a valid number.");
+      return;
+    } else if (height.value < 0) {
+      setError("The machine height is negative.");
+      return;
+    }
+    if (!isFloat(weight.value)) {
+      setError("The machine weight is not a valid number.");
+      return;
+    } else if (weight.value < 0) {
+      setError("The machine weight is negative.");
+      return;
+    }
+    if (!isFloat(capacity.value)) {
+      setError("The machine capacity is not a valid number.");
+      return;
+    } else if (capacity.value < 0) {
+      setError("The machine capacity is negative.");
+      return;
+    }
+    if (!isFloat(spindlespeed.value)) {
+      setError("The machine spindle speed is not a valid number.");
+      return;
+    } else if (spindlespeed.value < 0) {
+      setError("The machine spindle speed is negative.");
+      return;
+    }
+    /*
+    if (!isFloat(accuracy.value)) {
+      setError("The machine accuracy is not a valid number.");
+      return;
+    } else if (accuracy.value < 0) {
+      setError("The machine accuracy is negative.");
+      return;
+    }
+    */
+    /*
+    if (!isFloat(feed.value)) {
+      setError("The maximum feedrate for the machine is not a valid number.");
+      return;
+    } else if (feed.value < 0) {
+      setError("The maximum feedrate for the machine is negative.");
+      return;
+    }
+    */
+  }
+
+  var x = [x_x.value, x_y.value, x_z.value];
+  var y = [y_x.value, y_y.value, y_z.value];
+  var z = [z_x.value, z_y.value, z_z.value];
+
+  { // X
+    var m2 = getModulus2(x);
+    if (m2 <= 0) {
+      setError("Invalid direction for X axis.");
+      return;
+    }
+    if (x_min.value > x_max.value) {
+      setError("The minimum angle must not exceed the maximum angle for the X axis.");
+      return;
+    }
+    if (x_res.value < 0) {
+      setError("The resolution for the X axis is negative.");
+      return;
+    }
+    /*
+    if (x_feed.value < 0) {
+      setError("The maximum feedrate for the X axis is negative.");
+      return;
+    }
+    */
+  }
+  
+  { // Y
+    var m2 = getModulus2(y);
+    if (m2 <= 0) {
+      setError("Invalid direction for Y axis.");
+      return;
+    }
+    if (y_min.value > y_max.value) {
+      setError("The minimum angle must not exceed the maximum angle for the Y axis.");
+      return;
+    }
+    if (y_res.value < 0) {
+      setError("The resolution for the Y axis is negative.");
+      return;
+    }
+    /*
+    if (y_feed.value < 0) {
+      setError("The maximum feedrate for the Y axis is negative.");
+      return;
+    }
+    */
+  }
+  
+  { // Z
+    var m2 = getModulus2(z);
+    if (m2 <= 0) {
+      setError("Invalid direction for Z axis.");
+      return;
+    }
+    if (z_min.value > z_max.value) {
+      setError("The minimum angle must not exceed the maximum angle for the Z axis.");
+      return;
+    }
+    if (z_res.value < 0) {
+      setError("The resolution for the Z axis is negative.");
+      return;
+    }
+    /*
+    if (z_feed.value < 0) {
+      setError("The maximum feedrate for the Z axis is negative.");
+      return;
+    }
+    */
+  }  
+
+  x = normalize(x);
+  y = normalize(y);
+  z = normalize(z);
+
+  var EPSILON = 1e-9;
+  if (dot(x, y) > EPSILON) {
+    setError("X and Y axes must be perpendicular.");
+  }
+  if (dot(x, z) > EPSILON) {
+    setError("X and Z axes must be perpendicular.");
+  }
+  if (dot(x, z) > EPSILON) {
+    setError("X and Z axes must be perpendicular.");
+  }
+  if (dot(y, z) > EPSILON) {
+    setError("Y and Z axes must be perpendicular.");
+  }
+
+  var u = [u_x.value, u_y.value, u_z.value];
+  var v = [v_x.value, v_y.value, v_z.value];
+  
+  if (u_useaxis.checked) {
+    var m2 = getModulus2(u);
+    if (m2 <= 0) {
+      setError("Invalid direction for 5th axis.");
+      return;
+    }
+    u = normalize(u);
+    if (u_min.value > u_max.value) {
+      setError("The minimum angle must not exceed the maximum angle for the 4th axis.");
+      return;
+    }
+    if (u_res.value < 0) {
+      setError("The resolution for the 4th axis is negative.");
+      return;
+    }
+    /*
+    if (u_feed.value < 0) {
+      setError("The maximum feedrate for the 4th axis is negative.");
+      return;
+    }
+    */
+  }
+
+  if (v_useaxis.checked) {
+    var m2 = getModulus2(v);
+    if (m2 <= 0) {
+      setError("Invalid direction for 5th axis.");
+      return;
+    }
+    v = normalize(v);
+    if (dot(u, v) > 0.96) { // ~15deg
+      setError("Angular span for the 4th and 5th axes must exceed 15 degrees.");
+      return;
+    }
+    if (v_min.value > v_max.value) {
+      setError("The minimum angle must not exceed the maximum angle for the 5th axis.");
+      return;
+    }
+    if (v_res.value < 0) {
+      setError("The resolution for the 5th axis is negative.");
+      return;
+    }
+    /*
+    if (v_feed.value < 0) {
+      setError("The maximum feedrate for the 5th axis is negative.");
+      return;
+    }
+    */
+    if (v_coord.value == u_coord.value) {
+      setError("Coordinate for the 5th axis is already in use for the 4th axis.");
+      return;
+    }
+  }
+
+  setError(""); // no error
+  return true;
+}
+
+function getText(d, name) {
+  var node = d.selectSingleNode(name);
+  if (!node) {
+    return "";
+  }
+  return node.text;
+}
+
+function getValue(d, name) {
+  var node = d.selectSingleNode(name);
+  if (!node) {
+    return 0;
+  }
+  // TAG: map to unit
+  var inches = false; //unit.value == "inches";
+  var unit = "";
+  // text.substr(text.length - 2) == "mm";
+  return parseFloat(node.value); // TAG: for now throw away unit
+}
+
+function readValue(text) {
+  // TAG: map to unit
+  var inches = false; //unit.value == "inches";
+  var unit = "";
+  // text.substr(text.length - 2) == "mm";
+  return parseFloat(text); // TAG: for now throw away unit
+}
+
+function readRange(text) {
+  if (!text) {
+    return;
+  }
+  var a = text.split(" ");
+  if (a.length != 2) {
+    return;
+  }
+  var result = [];
+  for (var i = 0; i < a.length; ++i) {
+    result.push(readValue(a[i]));
+  }
+  return result;
+}
+
+function readVector(text) {
+  if (!text) {
+    return;
+  }
+  var a = text.split(" ");
+  if (a.length != 3) {
+    return;
+  }
+  var result = [];
+  for (var i = 0; i < a.length; ++i) {
+    result.push(readValue(a[i]));
+  }
+  return result;
+}
+
+function loadMachineDefinition(path) {
+
+  u_useaxis.checked = false;
+  u_table.style.display = "none";
+  v_useaxis.checked = false;
+  v_table.style.display = "none";
+
+  try {
+    var d = new ActiveXObject("Microsoft.XMLDom");
+    d.async = false;
+    d.load(path);
+    d.setProperty("SelectionLanguage", "XPath");
+    d.setProperty("SelectionNamespaces", "xmlns:ns='" + namespaceUri + "'");
+  } catch (e) {
+    alert(localize("Failed to load machine definition."));
+  }
+
+  description.value = getText(d, "/ns:machine/ns:description");
+  vendor.value = getText(d, "/ns:machine/ns:vendor");
+  control.value = getText(d, "/ns:machine/ns:control");
+  
+  unit.value = "millimeters"; // TAG: derive from input
+  
+  width.value = getValue(d, "/ns:machine/ns:dimensions/@width");
+  depth.value = getValue(d, "/ns:machine/ns:dimensions/@depth");
+  height.value = getValue(d, "/ns:machine/ns:dimensions/@height");
+  weight.value = getValue(d, "/ns:machine/ns:dimensions/@weight");
+
+  capacity.value = getValue(d, "/ns:machine/ns:capacities/@weight");
+
+  spindlespeed.value = getValue(d, "/ns:machine/ns:spindle/@maximumSpeed");
+
+  var axes = d.selectNodes("/ns:machine/ns:axis");
+  for (var i = 0; i < axes.length; ++i) {
+    var axis = axes[i];
+    
+    var range = readRange(axis.getAttribute("range"));
+    var resolution = readValue(axis.getAttribute("resolution"));
+    //var feed = readValue(axis.getAttribute("maximumFeed"));
+    var v = readVector(axis.getAttribute("axis"));
+    var offset = readVector(axis.getAttribute("offset"));
+    
+    switch (axis.getAttribute("id")) {
+    case "X":
+      x_x.value = v ? v[0] : 1;
+      x_y.value = v ? v[1] : 0;
+      x_z.value = v ? v[2] : 0;
+      x_min.value = range ? range[0] : 0;
+      x_max.value = range ? range[1] : 0;
+      x_res.value = resolution;
+      //x_feed.value = feed;
+      break;
+    case "Y":
+      y_x.value = v ? v[0] : 0;
+      y_y.value = v ? v[1] : 1;
+      y_z.value = v ? v[2] : 0;
+      y_min.value = range ? range[0] : 0;
+      y_max.value = range ? range[1] : 0;
+      y_res.value = resolution;
+      //y_feed.value = feed;
+      break;
+    case "Z":
+      z_x.value = v ? v[0] : 0;
+      z_y.value = v ? v[1] : 0;
+      z_z.value = v ? v[2] : 1;
+      z_min.value = range ? range[0] : 0;
+      z_max.value = range ? range[1] : 0;
+      z_res.value = resolution;
+      //z_feed.value = feed;
+      break;
+    case "U":
+      u_useaxis.checked = true;
+      u_table.style.display = "table";
+      setCheckValue(u_attachment, axis.getAttribute("link"));
+      switch (axis.getAttribute("preference")) {
+      case "negative":
+      case "positive":
+        u_pref.value = axis.getAttribute("preference");
+      }
+      var coordinate = axis.getAttribute("coordinate");
+      u_coord.value = coordinate ? coordinate : "A";
+
+      u_x.value = v ? v[0] : 0;
+      u_y.value = v ? v[1] : 0;
+      u_z.value = v ? v[2] : 1;
+      u_min.value = range ? range[0] : 0;
+      u_max.value = range ? range[1] : 0;
+      u_res.value = resolution;
+      //u_feed.value = feed;
+      break;
+    case "V":
+      v_useaxis.checked = true;
+      v_table.style.display = "table";
+      setCheckValue(v_attachment, axis.getAttribute("link"));
+      switch (axis.getAttribute("preference")) {
+      case "negative":
+      case "positive":
+        v_pref.value = axis.getAttribute("preference");
+      }
+      var coordinate = axis.getAttribute("coordinate");
+      v_coord.value = coordinate ? coordinate : "A";
+      
+      v_x.value = v ? v[0] : 0;
+      v_y.value = v ? v[1] : 0;
+      v_z.value = v ? v[2] : 1;
+      /*
+      v_ox.value = offset ? offset[0] : 0;
+      v_oy.value = offset ? offset[1] : 0;
+      v_oz.value = offset ? offset[2] : 1;
+      */
+      v_min.value = range ? range[0] : 0;
+      v_max.value = range ? range[1] : 0;
+      v_res.value = resolution;
+      //v_feed.value = feed;
+      break;
+    case "W":
+      break; // ignore
+    default:
+      // ignore     
+    }
+  }
+  
+  validate();
+}
+
+function makeAngularValue(value) {
+  return parseFloat(value) + "deg";
+}
+
+function makeSpatialValue(value) {
+  if (unit == "inches") {
+    return parseFloat(value) + "in";
+  } else {
+    return parseFloat(value) + "mm";
+  }
+}
+
+function getSpatialVectorAsXML(value) {
+  var result = "";
+  for (var i = 0; i < value.length; ++i) {
+    if (result) {
+      result += " ";
+    }
+    result += makeSpatialValue(value[i]);
+  }
+  return result;
+}
+
+function getVectorAsXML(value) {
+  var result = "";
+  for (var i = 0; i < value.length; ++i) {
+    if (result) {
+      result += " ";
+    }
+    result += value[i];
+  }
+  return result;
+}
+
+function makeSpatialFeedValue(value) {
+  if (unit == "inches") {
+    return parseFloat(value) + "ft/min";
+  } else {
+    return parseFloat(value) + "mm/min";
+  }
+}
+
+function makeAngularFeedValue(value) {
+  return parseFloat(value) + "deg/min";
+}
+
+function makeWeightValue(value) {
+  if (unit == "inches") {
+    return parseFloat(value) + "lb";
+  } else {
+    return parseFloat(value) + "kg";
+  }
+}
+
+function makeRPMValue(value) {
+  return parseFloat(value) + "rpm";
+}
+
+function getSpatialRangeAsXML(min, max) {
+  if (min >= max) {
+    return "unbound";
+  }
+  return makeSpatialValue(min) + " " + makeSpatialValue(max);
+}
+
+function getAngularRangeAsXML(min, max) {
+  if (min >= max) {
+    return "unbound";
+  }
+  return makeAngularValue(min) + " " + makeAngularValue(max);
+}
+
+var namespaceUri = "http://www.hsmworks.com/xml/2009/machine";
+
+function getXYZAxisAsXML(d, id, axis, min, max, resolution/*, feed*/) {
+  e = d.createNode("element", "axis", namespaceUri);
+  e.setAttribute("id", id);
+
+  var skipAxis = false;
+  if (((id == "X") && ((axis + "") == [1, 0, 0])) ||
+      ((id == "Y") && ((axis + "") == [0, 1, 0])) ||
+      ((id == "Z") && ((axis + "") == [0, 0, 1]))) {
+    skipAxis = true;
+  }
+  if (!skipAxis) {
+    e.setAttribute("axis", getVectorAsXML(axis));
+  }
+  
+  if ((min != max) && (min != 0)) {
+    e.setAttribute("range", getSpatialRangeAsXML(min, max));
+  }
+  /*
+  if (feed > 0) {
+    e.setAttribute("maximumFeed", makeSpatialFeedValue(feed));
+  }
+  */
+  if (resolution > 0) {
+    e.setAttribute("resolution", makeSpatialValue(resolution));
+  }
+  return e;
+}
+
+function getABCAxisAsXML(d, id, axis, offset, attachment, coordinate, min, max, resolution/*, feed*/, preference) {
+  e = d.createNode("element", "axis", namespaceUri);
+  e.setAttribute("id", id);
+  e.setAttribute("link", attachment);
+  
+  e.setAttribute("axis", getVectorAsXML(axis));
+  if (offset) {
+    e.setAttribute("offset", getSpatialVectorAsXML(offset));
+  }
+  
+  if ((min != max) && (min != 0)) {
+    e.setAttribute("range", getAngularRangeAsXML(min, max));
+  }
+  /*
+  if (feed > 0) {
+    e.setAttribute("maximumFeed", makeAngularFeedValue(feed));
+  }
+  */
+  if (resolution > 0) {
+    e.setAttribute("resolution", makeAngularValue(resolution));
+  }
+  
+  if (preference != "any") {
+    e.setAttribute("preference", preference);
+  }
+  
+  e.setAttribute("coordinate", coordinate);
+  return e;
+}
+
+function storeMachineDefinition(path) {
+  var d = new ActiveXObject("Microsoft.XMLDom");
+  
+  var pi = d.createProcessingInstruction("xml", "version='1.0' encoding='utf-8'");
+  d.appendChild(pi);
+  
+  var root = d.createNode("element", "machine", namespaceUri);
+  d.appendChild(root);
+  
+  var e;
+  if (vendor.value) {
+    e = d.createNode("element", "vendor", namespaceUri);
+    e.appendChild(d.createTextNode(vendor.value));
+    root.appendChild(e);
+  }
+  if (control.value) {
+    e = d.createNode("element", "control", namespaceUri);
+    e.appendChild(d.createTextNode(control.value));
+    root.appendChild(e);
+  }
+  if (description.value) {
+    e = d.createNode("element", "description", namespaceUri);
+    e.appendChild(d.createTextNode(description.value));
+    root.appendChild(e);
+  }
+  
+  if (true) {
+    e = d.createNode("element", "dimensions", namespaceUri);
+    var add = false;    
+    if (width.value > 0) {
+      add = true;
+      e.setAttribute("width", makeSpatialValue(width.value));
+    }
+    if (depth.value > 0) {
+      add = true;
+      e.setAttribute("depth", makeSpatialValue(depth.value));
+    }
+    if (height.value > 0) {
+      add = true;
+      e.setAttribute("height", makeSpatialValue(height.value));
+    }
+    if (weight.value > 0) {
+      add = true;
+      e.setAttribute("weight", makeWeightValue(weight.value));
+    }
+    if (add) {
+      root.appendChild(e);
+    }
+  }
+  
+  if (true) {
+    e = d.createNode("element", "capacities", namespaceUri);
+    var add = false;    
+    if (capacity.value > 0) {
+      add = true;
+      e.setAttribute("weight", makeWeightValue(capacity.value));
+    }
+    if (add) {
+      root.appendChild(e);
+    }
+  }
+  
+  if (true) {
+    e = d.createNode("element", "spindle", namespaceUri);
+    var add = false;    
+    // e.setAttribute("axis", getVectorAsXML(spindleaxis));
+    if (spindlespeed.value > 0) {
+      add = true;
+      e.setAttribute("maximumSpeed", makeRPMValue(spindlespeed.value));
+    }
+    if (add) {
+      root.appendChild(e);
+    }
+  }
+  
+  var x = [x_x.value, x_y.value, x_z.value];
+  root.appendChild(getXYZAxisAsXML(d, "X", x, x_min.value, x_max.value, x_res.value/*, x_feed.value*/));
+  var y = [y_x.value, y_y.value, y_z.value];
+  root.appendChild(getXYZAxisAsXML(d, "Y", y, y_min.value, y_max.value, y_res.value/*, y_feed.value*/));
+  var z = [z_x.value, z_y.value, z_z.value];
+  root.appendChild(getXYZAxisAsXML(d, "Z", z, z_min.value, z_max.value, z_res.value/*, z_feed.value*/));
+
+  if (u_useaxis.checked) {
+    var u = [u_x.value, u_y.value, u_z.value];
+    root.appendChild(getABCAxisAsXML(d, "U", u, undefined, getCheckedValue(u_attachment), u_coord.value, u_min.value, u_max.value, u_res.value, /*u_feed.value,*/ u_pref.value));
+  }
+  if (v_useaxis.checked) {
+    var v = [v_x.value, v_y.value, v_z.value];
+    root.appendChild(getABCAxisAsXML(d, "V", v, undefined, getCheckedValue(v_attachment), v_coord.value, v_min.value, v_max.value, v_res.value, /*v_feed.value,*/ v_pref.value));
+  }
+  
+  d.save(path);
+}
+
+</script>
