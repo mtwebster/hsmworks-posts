@@ -22,7 +22,7 @@ keywords = "MODEL_IMAGE";
 setCodePage("utf-8");
 
 properties = {
-  rapidFeed: 10000, // the rapid traversal feed
+  rapidFeed: 200, // the rapid traversal feed
   toolChangeTime: 15, // the time in seconds for a tool change
   listVariables: false // outputs the available variables to the log
 };
@@ -433,13 +433,14 @@ function onSectionEnd() {
   var axialStockToLeave = cachedParameters["operation:verticalStockToLeave"];
   var maximumStepdown = cachedParameters["operation:maximumStepdown"];
   var maximumStepover = cachedParameters["operation:maximumStepover"] ? cachedParameters["operation:maximumStepover"] : cachedParameters["operation:stepover"];
+  var zRange = currentSection.getGlobalZRange();
 
   operationParameters["tolerance"] = tolerance;
   operationParameters["stockToLeave"] = stockToLeave;
   operationParameters["axialStockToLeave"] = axialStockToLeave;
   operationParameters["maximumStepdown"] = maximumStepdown;
   operationParameters["maximumStepover"] = maximumStepover;
-
+  operationParameters["zdepth"] = zRange.getMinimum();
   var cycleTime = currentSection.getCycleTime();
 
   operationParameters["maximumFeed"] = currentSection.getMaximumFeedrate();
@@ -465,6 +466,7 @@ function onSectionEnd() {
   operationParameters["tool.type"] = getToolTypeName(tool.type);
   operationParameters["tool.spindleSpeed"] = tool.spindleSpeed;
   operationParameters["tool.coolant"] = getCoolantName(tool.coolant);
+  operationParameters["tool.comment"] = tool.comment;
 
   operationInfo.push(prepend("operation", operationParameters));
 

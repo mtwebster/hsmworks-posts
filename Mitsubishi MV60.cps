@@ -14,15 +14,15 @@
   1. Control must be setup to execute G00 as linear paths.
 */
 
-description = "Generic MELDAS";
+description = "Mitsubishi MV60";
 vendor = "HSMWorks ApS";
 vendorUrl = "http://www.hsmworks.com";
 legal = "Copyright (C) 2007-2011 HSMWorks ApS";
 certificationLevel = 2;
 minimumRevision = 24000;
 
-extension = "nc";
-programNameIsInteger = true;
+extension = "txt";
+programNameIsInteger = false;
 setCodePage("ascii");
 
 tolerance = spatial(0.002, MM);
@@ -39,15 +39,15 @@ allowedCircularPlanes = undefined; // allow any circular motion
 
 // user-defined properties
 properties = {
-  writeMachine: true, // write machine
-  writeTools: true, // writes the tools
+  writeMachine: false, // write machine
+  writeTools: false, // writes the tools
   preloadTool: true, // preloads next tool on tool change if any
-  showSequenceNumbers: true, // show sequence numbers
+  showSequenceNumbers: false, // show sequence numbers
   sequenceNumberStart: 10, // first sequence number
   sequenceNumberIncrement: 5, // increment for sequence numbers
   optionalStop: true, // optional stop
-  overrideLengthOffset: -1, // overrides the length offset is positive by adding this number to the tool number (-1 for disabled)
-  overrideDiameterOffset: -1, // overrides the diameter offset is positive by adding this number to the tool number (-1 for disabled)
+  overrideLengthOffset: 0, // overrides the length offset is positive by adding this number to the tool number (-1 for disabled)
+  overrideDiameterOffset: 0, // overrides the diameter offset is positive by adding this number to the tool number (-1 for disabled)
   separateWordsWithSpace: true, // specifies that the words should be separated with a white space
   useRadius: false // specifies that arcs should be output using the radius (R word) instead of the I, J, and K words.
 };
@@ -57,7 +57,7 @@ properties = {
 var permittedCommentChars = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,=_-";
 
 var mapCoolantTable = new Table(
-  [9, 8, null, 88],
+  [9, 8, 20, 88],
   {initial:COOLANT_OFF, force:true},
   "Invalid coolant mode"
 );
@@ -86,7 +86,7 @@ var cOutput = createVariable({prefix:"C"}, abcFormat);
 var feedOutput = createVariable({prefix:"F"}, feedFormat);
 var sOutput = createVariable({prefix:"S", force:true}, rpmFormat);
 var dOutput = createVariable({}, dFormat);
-
+var eOutput = createVariable({prefix:"E"}, feedFormat);
 // circular output
 var iOutput = createReferenceVariable({prefix:"I"}, xyzFormat);
 var jOutput = createReferenceVariable({prefix:"J"}, xyzFormat);
@@ -154,19 +154,19 @@ function onOpen() {
   
   if (programName) {
     var programId;
-    try {
-      programId = getAsInt(programName);
-    } catch(e) {
-      error(localize("Program name must be a number."));
-    }
-    if (!((programId >= 1) && (programId <= 99999999))) {
-      error(localize("Program number is out of range."));
-    }
-    var oFormat = createFormat({decimals:0});
+//    try {
+//      programId = getAsInt(programName);
+//    } catch(e) {
+//      error(localize("Program name must be a number."));
+//    }
+//    if (!((programId >= 1) && (programId <= 99999999))) {
+//      error(localize("Program number is out of range."));
+//    }
+//    var oFormat = createFormat({decimals:0});
     if (programComment) {
-      writeln("O" + oFormat.format(programId) + " (" + filterText(String(programComment).toUpperCase(), permittedCommentChars) + ")");
+      writeln("O0001" + " (" + filterText(String(programComment).toUpperCase(), permittedCommentChars) + ")");
     } else {
-      writeln("O" + oFormat.format(programId));
+      writeln("O0001");
     }
   } else {
     error(localize("Program name has not been specified."));
@@ -227,8 +227,8 @@ function onOpen() {
   }
 
   // absolute coordinates and feed per min
-  writeBlock(gAbsIncModal.format(90), gFeedModeModal.format(94), gPlaneModal.format(17));
-
+//  writeBlock(gAbsIncModal.format(90), gFeedModeModal.format(94), gPlaneModal.format(17));
+  writeBlock("G17 G00 G40 G64 G80 G54");
   switch (unit) {
   case IN:
     writeBlock(gUnitModal.format(20));
@@ -237,6 +237,7 @@ function onOpen() {
     writeBlock(gUnitModal.format(21));
     break;
   }
+  writeBlock("G90 G00 G53 Z0 Y0 X0")
 }
 
 function onComment(message) {
@@ -362,27 +363,29 @@ function onSection() {
       
     // retract to safe plane
     retracted = true;
-    writeBlock(gFormat.format(28), gAbsIncModal.format(91), "Z" + xyzFormat.format(0)); // retract
+    onCommand(COMMAND_COOLANT_OFF);
+    writeBlock(gFormat.format(28), gAbsIncModal.format(91), "Y" + xyzFormat.format(0), "Z" + xyzFormat.format(0), "M19"); // retract
     writeBlock(gAbsIncModal.format(90));
     zOutput.reset();
   }
   
   if (insertToolCall) {
     retracted = true;
-    onCommand(COMMAND_COOLANT_OFF);
+//    onCommand(COMMAND_COOLANT_OFF);
   
-    if (!isFirstSection() && properties.optionalStop) {
+//    if (!isFirstSection() && properties.optionalStop) {
       onCommand(COMMAND_OPTIONAL_STOP);
-    }
+//    }
 
     if (tool.number > 99) {
       warning(localize("Tool number exceeds maximum value."));
     }
-
-    writeBlock("T" + toolFormat.format(tool.number), mFormat.format(6));
-    if (tool.comment) {
-      writeComment(tool.comment);
-    }
+     
+    writeBlock("T" + toolFormat.format(tool.number), "(" + filterText(String(tool.comment).toUpperCase(), permittedCommentChars) + ")");
+//    writeBlock(mFormat.format(6));
+//    if (tool.comment) {
+//      writeComment(tool.comment);
+//    }
     var showToolZMin = false;
     if (showToolZMin) {
       if (is3D()) {
@@ -403,7 +406,7 @@ function onSection() {
     if (properties.preloadTool) {
       var nextTool = getNextTool(tool.number);
       if (nextTool) {
-        writeBlock("T" + toolFormat.format(nextTool.number));
+        writeBlock(mFormat.format(6), "T" + toolFormat.format(nextTool.number));
       } else {
         // preload first tool
         var section = getSection(0);
@@ -415,21 +418,6 @@ function onSection() {
     }
   }
   
-  if (insertToolCall ||
-      isFirstSection() ||
-      (tool.spindleRPM != getPreviousSection().getTool().spindleRPM) ||
-      (tool.clockwise != getPreviousSection().getTool().clockwise)) {
-    if (tool.spindleRPM < 1) {
-      error(localize("Spindle speed out of range."));
-    }
-    if (tool.spindleRPM > 99999) {
-      warning(localize("Spindle speed exceeds maximum value."));
-    }
-    writeBlock(
-      sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4)
-    );
-  }
-
   // wcs
   var workOffset = currentSection.workOffset;
   if (workOffset == 0) {
@@ -443,13 +431,13 @@ function onSection() {
         error(localize("Work offset out of range."));
       } else {
         if (workOffset != currentWorkOffset) {
-          writeBlock(gFormat.format(54.1), "P" + p); // G54.1P
+       //   writeBlock(gFormat.format(54.1), "P" + p); // G54.1P
           currentWorkOffset = workOffset;
         }
       }
     } else {
       if (workOffset != currentWorkOffset) {
-        writeBlock(gFormat.format(53 + workOffset)); // G54->G59
+     //   writeBlock(gFormat.format(53 + workOffset)); // G54->G59
         currentWorkOffset = workOffset;
       }
     }
@@ -476,16 +464,6 @@ function onSection() {
     setRotation(remaining);
   }
 
-  // set coolant after we have positioned at Z
-  {
-    var c = mapCoolantTable.lookup(tool.coolant);
-    if (c) {
-      writeBlock(mFormat.format(c));
-    } else {
-      warning(localize("Coolant not supported."));
-    }
-  }
-
   forceAny();
   gMotionModal.reset();
 
@@ -505,11 +483,12 @@ function onSection() {
     gMotionModal.reset();
     
     if (!machineConfiguration.isHeadConfiguration()) {
-      writeBlock(
+      writeBlock( "N" + toolFormat.format(tool.number),
         gAbsIncModal.format(90),
         gMotionModal.format(0), xOutput.format(initialPosition.x), yOutput.format(initialPosition.y)
       );
       writeBlock(gMotionModal.format(0), gFormat.format(43), zOutput.format(initialPosition.z), hFormat.format(lengthOffset));
+
     } else {
       writeBlock(
         gAbsIncModal.format(90),
@@ -518,6 +497,7 @@ function onSection() {
         yOutput.format(initialPosition.y),
         zOutput.format(initialPosition.z), hFormat.format(lengthOffset)
       );
+      writeBlock("G04 P3000");
     }
 
     gMotionModal.reset();
@@ -529,7 +509,35 @@ function onSection() {
       yOutput.format(initialPosition.y)
     );
   }
+  if (insertToolCall ||
+      isFirstSection() ||
+      (tool.spindleRPM != getPreviousSection().getTool().spindleRPM) ||
+      (tool.clockwise != getPreviousSection().getTool().clockwise)) {
+    if (tool.spindleRPM < 1) {
+      error(localize("Spindle speed out of range."));
+    }
+    if (tool.spindleRPM > 99999) {
+      warning(localize("Spindle speed exceeds maximum value."));
+    }
+    
+    if (tool.getTappingFeedrate()) {
+    writeBlock(sOutput.format(tool.spindleRPM));
+    } 
+    if (!tool.getTappingFeedrate()) {
+    writeBlock(sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4));
+    }
+  }
 
+  // set coolant after we have positioned at Z
+  {
+    var c = mapCoolantTable.lookup(tool.coolant);
+    if (c) {
+      writeBlock(mFormat.format(c));
+    } else {
+      warning(localize("Coolant not supported."));
+    }
+  }
+  writeBlock(onDwell(4.0));
   if (insertToolCall) {
     gPlaneModal.reset();
   }
@@ -620,8 +628,7 @@ function onCyclePoint(x, y, z) {
       writeBlock(
         gRetractModal.format(98), gAbsIncModal.format(90), gCycleModal.format((tool.type == TOOL_TAP_LEFT_HAND) ? 74 : 84),
         getCommonCycle(x, y, cycle.bottom, cycle.retract),
-        "P" + milliFormat.format(P),
-        feedOutput.format(F)
+        eOutput.format(1/(F/tool.spindleRPM))
       );
       break;
     case "left-tapping":
@@ -954,4 +961,6 @@ function onClose() {
   onImpliedCommand(COMMAND_STOP_SPINDLE);
   writeBlock(mFormat.format(30)); // stop program, spindle stop, coolant off
   writeln("%");
+//  var vars = " --debug --property programName "+programName+" --verbose";
+//  executeNoWait("post.exe",vars+"C:\Program Files\HSMWorks x64\posts\setup-sheet-excel.cps tttttt.xls",true,"");
 }
