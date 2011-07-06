@@ -21,6 +21,7 @@ legal = "Copyright (C) 2007-2011 HSMWorks ApS";
 certificationLevel = 2;
 minimumRevision = 24000;
 extension = "txt";
+keywords = "MODEL_IMAGE";
 programNameIsInteger = false;
 setCodePage("ascii");
 
@@ -43,6 +44,7 @@ properties = {
   preloadTool: true, // preloads next tool on tool change if any
   showSequenceNumbers: false, // show sequence numbers
   sequenceNumberStart: 10, // first sequence number
+  showModelImage: true, // specifies that the model image should be shown
   sequenceNumberIncrement: 5, // increment for sequence numbers
   optionalStop: true, // optional stop
   overrideLengthOffset: 0, // overrides the length offset is positive by adding this number to the tool number (-1 for disabled)
@@ -165,6 +167,7 @@ function onOpen() {
     if (programComment) {
       writeln("O0001" + " (" + filterText(String(programName).toUpperCase(), permittedCommentChars) + ")");
       writeComment(programComment);
+      writeComment(modelImagePath);
     } else {
       writeln("O0001");
     }
@@ -965,6 +968,6 @@ function onClose() {
   var args = " --property programName '"+programName+"' --property programComment '"+programComment+"'";
   var sspost = " g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
   var output = programName+".cnc";
-  execute("post.bat","\""+args+sspost+output+"\"",true,"");
+  execute("post.bat","\""+args+sspost+output+"\"",false,"");
   
 }

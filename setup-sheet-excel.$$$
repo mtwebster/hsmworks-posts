@@ -315,7 +315,7 @@ function onOpen() {
   programInfo["program.partPath"] = hasGlobalParameter("document-path") ? getGlobalParameter("document-path") : "";
   programInfo["program.partName"] = FileSystem.getFilename(programInfo["program.partPath"]);
   programInfo["program.user"] = hasGlobalParameter("username") ? getGlobalParameter("username") : "";
-  programInfo["program.modelPath"] = programName+".jpg";
+  programInfo["program.modelPath"] = getOutputPath()+programName+".jpg";
   var workpiece = getWorkpiece();
   var delta = Vector.diff(workpiece.upper, workpiece.lower);
   programInfo["program.stockLowerX"] = workpiece.lower.x;
