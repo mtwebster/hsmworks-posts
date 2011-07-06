@@ -530,5 +530,5 @@ function onClose() {
 
 function onTerminate() {
   //openUrl(getOutputPath());
-  execute("excel", "\"" + getOutputPath() + "\"", false, "");
+  executeNoWait("excel", "\"" + getOutputPath() + "\"", false, "");
 }

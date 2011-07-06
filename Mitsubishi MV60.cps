@@ -20,7 +20,6 @@ vendorUrl = "http://www.hsmworks.com";
 legal = "Copyright (C) 2007-2011 HSMWorks ApS";
 certificationLevel = 2;
 minimumRevision = 24000;
-
 extension = "txt";
 programNameIsInteger = false;
 setCodePage("ascii");
@@ -54,7 +53,7 @@ properties = {
 
 
 
-var permittedCommentChars = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,=_-";
+var permittedCommentChars = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,=_-#/\\";
 
 var mapCoolantTable = new Table(
   [9, 8, 20, 88],
@@ -164,7 +163,8 @@ function onOpen() {
 //    }
 //    var oFormat = createFormat({decimals:0});
     if (programComment) {
-      writeln("O0001" + " (" + filterText(String(programComment).toUpperCase(), permittedCommentChars) + ")");
+      writeln("O0001" + " (" + filterText(String(programName).toUpperCase(), permittedCommentChars) + ")");
+      writeComment(programComment);
     } else {
       writeln("O0001");
     }
@@ -961,6 +961,10 @@ function onClose() {
   onImpliedCommand(COMMAND_STOP_SPINDLE);
   writeBlock(mFormat.format(30)); // stop program, spindle stop, coolant off
   writeln("%");
-//  var vars = " --debug --property programName "+programName+" --verbose";
-//  executeNoWait("post.exe",vars+"C:\Program Files\HSMWorks x64\posts\setup-sheet-excel.cps tttttt.xls",true,"");
+  
+  var args = " --property programName '"+programName+"' --property programComment '"+programComment+"'";
+  var sspost = " g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
+  var output = programName+".cnc";
+  execute("post.bat","\""+args+sspost+output+"\"",true,"");
+  
 }
