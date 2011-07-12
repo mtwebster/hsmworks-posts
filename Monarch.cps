@@ -14,7 +14,7 @@
   1. Control must be setup to execute G00 as linear paths.
 */
 
-description = "Mitsubishi MV60";
+description = "Monarch VMC";
 vendor = "HSMWorks ApS";
 vendorUrl = "http://www.hsmworks.com";
 legal = "Copyright (C) 2007-2011 HSMWorks ApS";
@@ -40,7 +40,7 @@ allowedCircularPlanes = undefined; // allow any circular motion
 properties = {
   writeMachine: false, // write machine
   writeTools: false, // writes the tools
-  preloadTool: true, // preloads next tool on tool change if any
+  preloadTool: false, // preloads next tool on tool change if any
   showSequenceNumbers: false, // show sequence numbers
   sequenceNumberStart: 10, // first sequence number
   showModelImage: true, // specifies that the model image should be shown
@@ -151,7 +151,7 @@ function onOpen() {
   }
 
   sequenceNumber = properties.sequenceNumberStart;
-writeln("%");  
+  
   if (programName) {
     var programId;
 //    try {
@@ -166,7 +166,7 @@ writeln("%");
     if (programComment) {
       writeln("O0001" + " (" + filterText(String(programName).toUpperCase(), permittedCommentChars) + ")");
       writeComment(programComment);
-      writeComment("MV60");
+      writeComment("MONARCH");
     } else {
       writeln("O0001");
     }
@@ -382,12 +382,11 @@ function onSection() {
     if (tool.number > 99) {
       warning(localize("Tool number exceeds maximum value."));
     }
-     
-    writeBlock("T" + toolFormat.format(tool.number), "(" + filterText(String(tool.comment).toUpperCase(), permittedCommentChars) + ")");
-//    writeBlock(mFormat.format(6));
-//    if (tool.comment) {
-//      writeComment(tool.comment);
-//    }
+    if (properties.preloadTool) { 
+      writeBlock("T" + toolFormat.format(tool.number), "(" + filterText(String(tool.comment).toUpperCase(), permittedCommentChars) + ")");
+    } else {
+      writeBlock(mFormat.format(6), "T" + toolFormat.format(tool.number), "(" + filterText(String(tool.comment).toUpperCase(), permittedCommentChars) + ")");
+    }
     var showToolZMin = false;
     if (showToolZMin) {
       if (is3D()) {
@@ -417,7 +416,7 @@ function onSection() {
           writeBlock(mFormat.format(6), "T" + toolFormat.format(firstToolNumber));
         }
       }
-    }
+    } 
   }
   
   // wcs
@@ -964,12 +963,9 @@ function onClose() {
   writeBlock(mFormat.format(30)); // stop program, spindle stop, coolant off
   writeln("%");
   
-  var args = " --property programName '"+programName+"' --property programComment '"+programComment+"'";
-  var sspost = " g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
-  var monarchpost = " g:\\bin\\hsm\\posts\\monarch.cps ";
-  var output = programName+".cnc ";
-  var monarch = " "+programName+"-monarch.txt ";
-  execute("post.bat","\""+args+monarchpost+output+monarch+"\"",false,"");
-  execute("post.bat","\""+args+sspost+output+"\"",false,"");
-
+//  var args = " --property programName '"+programName+"' --property programComment '"+programComment+"'";
+//  var sspost = " g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
+//  var output = programName+".cnc";
+//  execute("post.bat","\""+args+sspost+output+"\"",false,"");
+  
 }

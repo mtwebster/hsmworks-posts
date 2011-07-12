@@ -269,8 +269,6 @@ function onSectionEnd() {
   if (isFirstSection()) {
     var c = "";
     
-    c+= makeRow(makeColumn(d(localize("Program Name") +": ") + v(programName)));
-    
     if (programComment) {
       c += makeRow(makeColumn(d(localize("Program Comment") + ": ") + v(programComment)));
     }
@@ -382,6 +380,7 @@ function onSectionEnd() {
   //    if (modelImagePath && properties.showModelImage) {
         ++numberOfColumns;
         var alignment = (numberOfColumns <= 1) ? "center" : "right";
+//        write("<td class=\"model\" align=\"" + alignment + "\"><img src=\"" + modelImagePath + "\"/></td>");
         write("<td class=\"model\" align=\"" + alignment + "\"><img src=\"" + programName+".jpg" + "\"/></td>");
   //    }
 
@@ -719,8 +718,57 @@ function writeTotals() {
   write("</table>");
   writeln("");
   writeln("");
+}
+
+function onClose() {
+  writeln("</table>");
+
+  c = "<head>";
   
-  writeln("<br>");
+  if (properties.embedStylesheet) {
+    c += "<style type=\"text/css\">" + loadText("tool-sheet.css", "utf-8") + "</style>";
+  } else {
+    c += "<link rel=\"StyleSheet\" href=\"tool-sheet.css\" type=\"text/css\" media=\"print, screen\">";
+  }
+  c += "</head>";
+  write(c);
+
+  write("<body>");
+ // write("<h1>" + localize("Tool Sheet") + "</h1>");
+
+
+  {
+    c = "";
+
+    if (hasParameter("job-description")) {
+      var description = getParameter("job-description");
+      if (description) {
+        c += makeRow(makeColumn(d(localize("Job Description") + ": ") + v(description)));
+      }
+    }
+
+    if (hasParameter("iso9000/document-control")) {
+      var id = getParameter("iso9000/document-control");
+      if (id) {
+        c += makeRow(makeColumn(d(localize("Job ISO-9000 Control") + ": ") + v(id)));
+      }
+    }
+
+//    if (hasParameter("document-path") && properties.showDocumentPath) {
+//      var path = getParameter("document-path");
+//      if (path) {
+//        c += makeRow(makeColumn(d(localize("Document Path") + ": ") + v(path)));
+//      }
+//    }
+
+    if (c) {
+      write("<table class=\"jobhead\" align=\"center\">" + c + "</table>");
+      write("<br>");
+      writeln("");
+      writeln("");
+    }
+  }
+
   write("<table class=\"sheet\" cellspacing=\"0\" align=\"center\"");
   var colgroup = "<colgroup span=\"3\"><col width=\"1*\"/><col width=\"1*\"/><col width=\"120\"/></colgroup>";
   write(colgroup);
@@ -837,62 +885,7 @@ function writeTotals() {
   writeln("</table>");
   writeln("");
 
-  writeln("<br>");
-  write("<table class=\"sheet\" cellspacing=\"0\" align=\"center\"");
-  var colgroup = "<colgroup span=\"3\"><col width=\"1*\"/><col width=\"1*\"/><col width=\"120\"/></colgroup>";
-  write(colgroup);
-  write(makeRow("<th colspan=\"3\">" + localize("Operations") + "</th>"));
-  
-}
-
-function onClose() {
-  writeln("</table>");
-
-  c = "<head>";
-  
-  if (properties.embedStylesheet) {
-    c += "<style type=\"text/css\">" + loadText("tool-sheet.css", "utf-8") + "</style>";
-  } else {
-    c += "<link rel=\"StyleSheet\" href=\"tool-sheet.css\" type=\"text/css\" media=\"print, screen\">";
-  }
-  c += "</head>";
-  write(c);
-
-  write("<body>");
- // write("<h1>" + localize("Tool Sheet") + "</h1>");
-
-
-  {
-    c = "";
-
-    if (hasParameter("job-description")) {
-      var description = getParameter("job-description");
-      if (description) {
-        c += makeRow(makeColumn(d(localize("Job Description") + ": ") + v(description)));
-      }
-    }
-
-    if (hasParameter("iso9000/document-control")) {
-      var id = getParameter("iso9000/document-control");
-      if (id) {
-        c += makeRow(makeColumn(d(localize("Job ISO-9000 Control") + ": ") + v(id)));
-      }
-    }
-
-//    if (hasParameter("document-path") && properties.showDocumentPath) {
-//      var path = getParameter("document-path");
-//      if (path) {
-//        c += makeRow(makeColumn(d(localize("Document Path") + ": ") + v(path)));
-//      }
-//    }
-
-    if (c) {
-      write("<table class=\"jobhead\" align=\"center\">" + c + "</table>");
-      write("<br>");
-      writeln("");
-      writeln("");
-    }
-  }
+  write("<br>");
   // write(p(localize("Total number of tools") + ": " + tools.getNumberOfTools()));
 
   // footer

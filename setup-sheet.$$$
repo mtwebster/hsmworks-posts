@@ -837,11 +837,15 @@ function writeTotals() {
   writeln("</table>");
   writeln("");
 
+  write("<br>");
+
+
   writeln("<br>");
   write("<table class=\"sheet\" cellspacing=\"0\" align=\"center\"");
   var colgroup = "<colgroup span=\"3\"><col width=\"1*\"/><col width=\"1*\"/><col width=\"120\"/></colgroup>";
   write(colgroup);
   write(makeRow("<th colspan=\"3\">" + localize("Operations") + "</th>"));
+  
   
 }
 

@@ -1,0 +1,153 @@
+/**
+  Copyright (c) 2007-2010 by HSMWorks ApS
+  http://www.hsmworks.com
+  All rights reserved
+
+  $Revision: 23082 $
+  $Date: 2010-12-10 00:32:07 +0100 (fr, 10 dec 2010) $
+*/
+
+body {
+	background-color: White;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-size: 15pt;
+	text-align: center;
+}
+
+h2 {
+	font-size: 13pt;
+}
+
+h3 {
+	font-size: 11pt;
+}
+
+h3.section {
+	text-decoration: underline;
+}
+
+table {
+	border: none;
+	border-spacing: 0;
+}
+
+table.jobhead {
+	width: 18cm;
+}
+
+table.job, table.sheet {
+	width: 18cm;
+	border: thin solid Gray;
+}
+
+th {
+	background-color: #e0e0e0;
+	border-bottom: 1px solid Gray;
+}
+
+tr.space td {
+	border-bottom: 1px solid Gray;
+	height: 1px;
+	font-size: 1px;
+}
+
+table.info {
+	padding-top: 0.1cm;
+}
+
+table.info td {
+	padding-left: 0.1cm;
+}
+
+.job td {
+	padding: 0.1cm 0.1cm 0.1cm 0.1cm;
+}
+
+.model img {
+	width: 12cm;
+	border: 2px solid Black;
+}
+
+tr {
+	border: 1 solid Black;
+	page-break-inside: avoid;
+	padding-top: 30px;
+	padding-bottom: 20px;
+	white-space: nowrap;
+}
+
+.even td {
+	background-color: White;
+}
+
+.odd td {
+	background-color: #f0f0f0;
+}
+
+.jobhead td {
+	font-size: 12pt;
+	vertical-align: top;
+}
+
+td {
+	font-size: 9pt;
+	vertical-align: top;
+}
+
+td.image {
+	text-align: right;
+}
+
+.notes {
+	white-space: normal;
+	font-style: italic;
+}
+
+p {
+	white-space: nowrap;
+	font-size: 12pt;
+	text-indent: 1cm;
+	display: block;
+}
+
+.jobhead td .description {
+	display: inline;
+	font-variant: small-caps;
+}
+
+td .description {
+	font-size: 8pt;
+	display: inline;
+	font-variant: small-caps;
+}
+
+.value {
+	display: inline;
+	font-family: Geneva, sans-serif;
+	color: #606060;
+}
+
+td .percentage {
+	display: inline;
+	font-size: 7pt;
+}
+
+.longtext {
+	white-space: normal;
+}
+
+
+img.logo {
+	height: 0.75cm;
+	vertical-align: middle;
+	margin-right: 1em;
+}
+
+.footer {
+	font-size: 9pt;
+	color: Silver;
+	text-align: center;
+}
