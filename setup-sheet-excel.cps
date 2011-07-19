@@ -25,7 +25,8 @@ properties = {
   rapidFeed: 200, // the rapid traversal feed
   toolChangeTime: 15, // the time in seconds for a tool change
   listVariables: false, // outputs the available variables to the log
-  showModelImage: true // specifies that the model image should be shown
+  showModelImage: true, // specifies that the model image should be shown
+  NCPath: ""
 };
 
 var timeFormat = createFormat({width:2, zeropad:true, decimals:0});
@@ -308,9 +309,12 @@ function onParameter(name, value) {
   cachedParameters[name] = value;
 }
 
+var totaltime = 0;
+
 function onOpen() {
   programInfo = getProgramInfo();
-
+  programInfo["program.ncpath"] = properties.NCPath;
+  programInfo["program.outputpath"] = getOutputPath();
   programInfo["program.jobDescription"] = hasGlobalParameter("job-description") ? getGlobalParameter("job-description") : "";
   programInfo["program.partPath"] = hasGlobalParameter("document-path") ? getGlobalParameter("document-path") : "";
   programInfo["program.partName"] = FileSystem.getFilename(programInfo["program.partPath"]);
@@ -452,8 +456,9 @@ function onSectionEnd() {
     cycleTime += currentSection.getRapidDistance()/properties.rapidFeed;
   }
   operationParameters["cycleTime"] = formatTime(cycleTime);
-
+  totaltime += currentSection.getCycleTime();
   var tool = currentSection.getTool();
+  operationParameters["totaltime"] = formatTime(totaltime);
   operationParameters["tool.number"] = tool.number;
   operationParameters["tool.diameterOffset"] = tool.diameterOffset;
   operationParameters["tool.lengthOffset"] = tool.lengthOffset;
@@ -470,7 +475,7 @@ function onSectionEnd() {
   operationParameters["tool.comment"] = tool.comment;
 
   operationInfo.push(prepend("operation", operationParameters));
-
+  programInfo["program.totaltime"] = formatTime(totaltime);
   cachedParameters = {};
 }
 
@@ -487,6 +492,8 @@ function formatTime(cycleTime) {
     timeFormat.format(d.getSeconds())
   );
 }
+
+
 
 function dumpIds() {
   for (var k in programInfo) {
@@ -512,7 +519,9 @@ function onClose() {
   if (properties.listVariables) {
     dumpIds();
   }
-  
+ 
+
+ 
   var xml = loadText("setup-sheet-excel-template.xls", "utf-8");
   var xml = xml.replace(/<\?xml (.*?)\?>/, "");
   var d = new XML(xml);

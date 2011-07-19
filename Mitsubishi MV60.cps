@@ -167,6 +167,7 @@ writeln("%");
       writeln("O0001" + " (" + filterText(String(programName).toUpperCase(), permittedCommentChars) + ")");
       writeComment(programComment);
       writeComment("MV60");
+      writeComment(getOutputPath());
     } else {
       writeln("O0001");
     }
@@ -966,10 +967,14 @@ function onClose() {
   
   var args = " --property programName '"+programName+"' --property programComment '"+programComment+"'";
   var sspost = " g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
+  var ncpath = " --property NCPath \""+getOutputPath()+"\" ";
   var monarchpost = " g:\\bin\\hsm\\posts\\monarch.cps ";
   var output = programName+".cnc ";
   var monarch = " "+programName+"-monarch.txt ";
-  execute("post.bat","\""+args+monarchpost+output+monarch+"\"",false,"");
-  execute("post.bat","\""+args+sspost+output+"\"",false,"");
+  var fullpath = getOutputPath();
+  var path = fullpath.replace(programName+".txt","");
+  
+  execute("post.bat","\""+args+monarchpost+output+monarch+"\"",false,path);
+  execute("post.bat","\""+args+sspost+output+"\"",false,path);
 
 }
