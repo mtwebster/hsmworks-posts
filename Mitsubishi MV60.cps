@@ -965,16 +965,16 @@ function onClose() {
   writeBlock(mFormat.format(30)); // stop program, spindle stop, coolant off
   writeln("%");
   
-  var args = " --property programName '"+programName+"' --property programComment '"+programComment+"'";
-  var sspost = " g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
-  var ncpath = " --property NCPath \""+getOutputPath()+"\" ";
-  var monarchpost = " g:\\bin\\hsm\\posts\\monarch.cps ";
-  var output = programName+".cnc ";
-  var monarch = " "+programName+"-monarch.txt ";
+  var formatted_programName=programName.replace(/ /g,"_");
+  var formatted_programComment=programComment.replace(/ /g,"_");
+  var args = "--noeditor --log \"s.log\" --property programComment \'"+formatted_programComment+"\' --property programName '"+formatted_programName+"' ";
+  var sspost = "g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
+  var monarchpost = "g:\\bin\\hsm\\posts\\monarch.cps ";
+  var output = "\""+getOutputPath().replace(".txt",".cnc")+"\"";
+  var monarch = " \""+programName+"-monarch.txt\"";
   var fullpath = getOutputPath();
-  var path = fullpath.replace(programName+".txt","");
-  
-  execute("post.bat","\""+args+monarchpost+output+monarch+"\"",false,path);
-  execute("post.bat","\""+args+sspost+output+"\"",false,path);
+  var path = fullpath.replace("\\"+programName+".txt","");
 
+  execute("post.exe",args+sspost+output,true,path);
+  execute("post.exe",args+monarchpost+output+monarch,true,path);
 }

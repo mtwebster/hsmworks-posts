@@ -149,7 +149,7 @@ function onOpen() {
   if (!properties.separateWordsWithSpace) {
     setWordSeparator("");
   }
-
+writeln("%");  
   sequenceNumber = properties.sequenceNumberStart;
   
   if (programName) {

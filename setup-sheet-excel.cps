@@ -25,8 +25,7 @@ properties = {
   rapidFeed: 200, // the rapid traversal feed
   toolChangeTime: 15, // the time in seconds for a tool change
   listVariables: false, // outputs the available variables to the log
-  showModelImage: true, // specifies that the model image should be shown
-  NCPath: ""
+  showModelImage: true // specifies that the model image should be shown
 };
 
 var timeFormat = createFormat({width:2, zeropad:true, decimals:0});
@@ -313,13 +312,11 @@ var totaltime = 0;
 
 function onOpen() {
   programInfo = getProgramInfo();
-  programInfo["program.ncpath"] = properties.NCPath;
-  programInfo["program.outputpath"] = getOutputPath();
+  programInfo["program.outputpath"] = getOutputPath().replace(".xls",".txt");
   programInfo["program.jobDescription"] = hasGlobalParameter("job-description") ? getGlobalParameter("job-description") : "";
   programInfo["program.partPath"] = hasGlobalParameter("document-path") ? getGlobalParameter("document-path") : "";
   programInfo["program.partName"] = FileSystem.getFilename(programInfo["program.partPath"]);
   programInfo["program.user"] = hasGlobalParameter("username") ? getGlobalParameter("username") : "";
-  programInfo["program.modelPath"] = programName+".jpg";
   var workpiece = getWorkpiece();
   var delta = Vector.diff(workpiece.upper, workpiece.lower);
   programInfo["program.stockLowerX"] = workpiece.lower.x;
