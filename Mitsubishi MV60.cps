@@ -965,16 +965,34 @@ function onClose() {
   writeBlock(mFormat.format(30)); // stop program, spindle stop, coolant off
   writeln("%");
   
-  var formatted_programName=programName.replace(/ /g,"_");
-  var formatted_programComment=programComment.replace(/ /g,"_");
-  var args = "--noeditor --log \"s.log\" --property programComment \'"+formatted_programComment+"\' --property programName '"+formatted_programName+"' ";
-  var sspost = "g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
-  var monarchpost = "g:\\bin\\hsm\\posts\\monarch.cps ";
-  var output = "\""+getOutputPath().replace(".txt",".cnc")+"\"";
-  var monarch = " \""+programName+"-monarch.txt\"";
-  var fullpath = getOutputPath();
-  var path = fullpath.replace("\\"+programName+".txt","");
+  
+}
 
-  execute("post.exe",args+sspost+output,true,path);
-  execute("post.exe",args+monarchpost+output+monarch,true,path);
+function quote(text) {
+  var result = "";
+  for (var i = 0; i < text.length; ++i) {
+    var ch = text.charAt(i);
+    switch (ch) {
+    case "\"":
+      result += "\"";
+    }
+    result += ch;
+  }
+  return "\"" + result + "\"";
+}
+
+function onTerminate() {
+
+  var outputPath = getOutputPath();
+  var setupsheet_postPath = "g:\\bin\\hsm\\posts\\setup-sheet-excel.cps ";
+  var monarch_postPath = "g:\\bin\\hsm\\posts\\monarch.cps ";
+  var monarch_output = outputPath.replace(".txt","-monarch.txt");
+  var intermediatePath = FileSystem.replaceExtension(outputPath, "cnc");
+  var arguments = "--property unit 0 --noeditor"; // use 0 for inch and 1 for mm
+  arguments += " --property programName \"'" + programName + "\"'";
+  arguments += " --property programComment \"'" + programComment + "\"'";
+  var ss_arguments = arguments + " --log temp.log " + quote(setupsheet_postPath) + " " + quote(intermediatePath);
+  var monarch_arguments = arguments + " --log temp.log " + quote(monarch_postPath) + " " + quote(intermediatePath) + " " + quote(monarch_output);
+  execute("post.exe", ss_arguments, false, "");
+  execute("post.exe", monarch_arguments, false, "");
 }

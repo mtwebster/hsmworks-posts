@@ -15,7 +15,7 @@ vendor = "HSMWorks ApS";
 vendorUrl = "http://www.hsmworks.com";
 legal = "Copyright (C) 2007-2011 HSMWorks ApS";
 certificationLevel = 2;
-programNameIsInteger = false;
+
 extension = "xls";
 mimetype = "text/xml";
 keywords = "MODEL_IMAGE";
