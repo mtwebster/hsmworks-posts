@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type='text/xsl' href='locale.xsl'?>
-<locale xmlns="http://www.cimco-software.com/xml/2003/locale">
-<!--The content of this document may be covered by copyright-->
-<description>Danish</description>
-<country>dk</country>
-
-</locale>
